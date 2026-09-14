@@ -104,6 +104,11 @@ python3 tools/fetch-texts.py
 
 זו הגרסה המלאה — כאן גם המשיכה החיה מספריא עובדת.
 
+**הפעלה ראשונה, פעם אחת:** Settings → Pages → Build and deployment →
+Source: **GitHub Actions**. ה-`GITHUB_TOKEN` של Actions יכול לפרוס ל-Pages
+אבל לא ליצור את האתר — לשם כך נדרשת הרשאת ניהול שהוא לא מקבל, ולכן אי אפשר
+לעשות את הצעד הזה מתוך ה-workflow. אחרי ההפעלה כל דחיפה ל-`main` נפרסת מעצמה.
+
 ### Artifact
 
 `tools/build-artifact.py` בונה גרסת עמוד יחיד (גוף בלבד, CSS מוטמע) לפרסום

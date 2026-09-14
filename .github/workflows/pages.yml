@@ -44,9 +44,27 @@ jobs:
           done
           exit $missing
 
+      # GITHUB_TOKEN יכול לפרוס ל-Pages אבל לא *ליצור* את האתר — לשם כך
+      # נדרשת הרשאת ניהול שאסימוני Actions לא מקבלים בכוונה. לכן ההפעלה
+      # הראשונה היא ידנית, והשלב הזה אומר את זה במפורש במקום ליפול על
+      # "Resource not accessible by integration".
+      - name: ודא ש-Pages מופעל
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          code=$(curl -sS -o /dev/null -w '%{http_code}' \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pages")
+          if [ "$code" = "404" ]; then
+            echo "::error::GitHub Pages עדיין לא מופעל בריפו הזה."
+            echo "פעולה חד-פעמית: Settings → Pages → Build and deployment → Source: GitHub Actions."
+            echo "אחר כך הריצו את ה-workflow הזה מחדש (Actions → Deploy to GitHub Pages → Run workflow)."
+            exit 1
+          fi
+          echo "Pages מופעל (HTTP $code)."
+
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
