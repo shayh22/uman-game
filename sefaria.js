@@ -169,8 +169,10 @@ window.SefariaLibrary = (function () {
    */
   function toSpeech(text) {
     var s = String(text || '');
-    s = s.replace(/[֑-ֽ֯׀׃׆]/g, '');  // טעמים ופיסוק מקראי
-    s = s.replace(/־/g, ' ');                                   // מקף
+    // טעמי מקרא, סוף פסוק ופסק — כתובים כ-\u כדי שהקובץ ייקרא נכון גם אם
+    // הדף המארח לא הכריז על UTF-8; אחרת ה-regex נשבר וכל הקובץ נופל בפרסור.
+    s = s.replace(/[\u0591-\u05AF\u05BD\u05C0\u05C3\u05C6]/g, '');  // טעמים ופיסוק מקראי
+    s = s.replace(/\u05BE/g, ' ');                                    // מקף
     s = s.replace(/\([^()]{0,40}\)/g, ' ');                          // הפניות בסוגריים
     s = s.replace(/\[[^\[\]]{0,40}\]/g, ' ');
     s = s.replace(/\{[^{}]{0,8}\}/g, ' ');                         // סימני פרשה {פ} {ס}
@@ -185,7 +187,7 @@ window.SefariaLibrary = (function () {
     for (var i = 0; i < src.length; i++) {
       var ch = src[i];
       buf += ch;
-      if ('.!?׃\n'.indexOf(ch) >= 0 && buf.trim().length > 12) {
+      if ('.!?\u05C3\n'.indexOf(ch) >= 0 && buf.trim().length > 12) {
         parts.push(buf.trim());
         buf = '';
       }
