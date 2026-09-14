@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>מסע אומן — Uman Journey</title>
+<meta name="description" content="מסע תלת־ממד אל ציון רבי נחמן באומן: תצלומים אמיתיים מן המקום, וספרייה שמושכת את הספרים מספריא ומקריאה אותם.">
+<meta name="theme-color" content="#070C18">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Spectral:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lang="he">
+
+<canvas id="scene"></canvas>
+
+<!-- 1. בחירת שפה -->
+<section class="layer" id="gate">
+  <div class="flame"></div>
+  <h1>מסע אומן</h1>
+  <p class="sub">שביל אל הציון הקדוש, וספרייה שמחכה שיפתחו אותה.</p>
+  <div class="langs">
+    <button class="lang" data-lang="he"><span>עברית</span><span class="lat">Hebrew</span></button>
+    <button class="lang" data-lang="en"><span>English</span><span class="lat">Anglais</span></button>
+    <button class="lang" data-lang="fr"><span>Français</span><span class="lat">French</span></button>
+  </div>
+  <p class="foot">
+    מומלץ לשחק בטלפון, במצב אנכי, עם קול פתוח.<br>
+    התצלומים הם מן הציון באומן — מוויקישיתוף, בנחלת הכלל או ברישיון Creative Commons.
+    הטקסטים נמשכים מ<span dir="ltr">ספריא</span>.
+  </p>
+</section>
+
+<!-- 2. הוראות + הרשאת ג'ירוסקופ -->
+<section class="layer hidden" id="intro">
+  <div class="box">
+    <h2 id="introTitle"></h2>
+    <ul id="introList"></ul>
+    <button class="btn" id="startBtn"></button>
+  </div>
+</section>
+
+<!-- 3. HUD -->
+<section class="layer hidden" id="hud">
+  <div id="topbar"><span id="place"></span><span id="counter"></span></div>
+  <div id="bottombar">
+    <div id="stick"><i></i></div>
+    <div id="sideBtns">
+      <button class="chip" id="gyroBtn"></button>
+      <button class="chip" id="langBtn"></button>
+    </div>
+  </div>
+</section>
+
+<div id="prompt" class="hidden">
+  <div id="promptText"></div>
+  <button class="btn" id="promptBtn"></button>
+</div>
+
+<div id="pullHint" class="hidden"></div>
+<div id="flash"></div>
+
+<!-- 4. מסך ההגעה לציון -->
+<section class="layer hidden" id="tzion">
+  <div class="box">
+    <h2 id="tzionTitle"></h2>
+    <p id="tzionText"></p>
+    <button class="btn" id="tzionBtn"></button>
+  </div>
+</section>
+
+<!-- 5. מציג התצלומים -->
+<section class="layer hidden" id="lightbox">
+  <button id="lbClose" aria-label="close">✕</button>
+  <div id="lbFrame"><img id="lbImg" alt=""></div>
+  <div id="lbInfo">
+    <p id="lbCap"></p>
+    <p id="lbMeta"></p>
+  </div>
+</section>
+
+<!-- 6. קורא הספרים + נגן ההקראה -->
+<section class="layer hidden" id="reader">
+  <header>
+    <h2 id="bookTitle"></h2>
+    <button id="closeBook" aria-label="close">✕</button>
+  </header>
+  <div id="pages"><div id="pageInner">
+    <p id="pageTitle"></p>
+    <p id="pageBody"></p>
+    <p id="srcLine"></p>
+  </div></div>
+  <footer>
+    <div class="row">
+      <div class="pager">
+        <button class="pbtn" id="prevPage">‹</button>
+        <span id="pageNum"></span>
+        <button class="pbtn" id="nextPage">›</button>
+      </div>
+      <div class="audio">
+        <button class="pbtn primary" id="playBtn"></button>
+        <button class="pbtn" id="fwdBtn">»</button>
+      </div>
+    </div>
+    <div class="row">
+      <label class="audio" style="gap:8px"><span id="rateLbl">1.0×</span><input type="range" id="rate" min="0.6" max="1.6" step="0.1" value="1"></label>
+      <p id="ttsNote"></p>
+    </div>
+  </footer>
+</section>
+
+<!-- Three.js r128 (רישיון MIT) — מקומי, כדי שהמשחק ירוץ גם בלי אינטרנט -->
+<script src="vendor/three.min.js"></script>
+
+<!-- תוכן: תרגומים, ספרים, טקסטים מוטמעים, תצלומים -->
+<script src="data/lang.js"></script>
+<script src="data/books.js"></script>
+<script src="data/texts.js"></script>
+<script src="data/photos.js"></script>
+
+<!-- לקוח הספרייה (ספריא) ואז המשחק -->
+<script src="sefaria.js"></script>
+<script src="game.js"></script>
+<script>bootUman();</script>
+</body>
+</html>
