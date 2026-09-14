@@ -96,11 +96,21 @@ python3 tools/fetch-texts.py
 
 ## פרסום
 
+### GitHub Pages
+
+`.github/workflows/pages.yml` פורס אוטומטית בכל דחיפה ל-`main`:
+
+<https://shayh22.github.io/uman-game/>
+
+זו הגרסה המלאה — כאן גם המשיכה החיה מספריא עובדת.
+
+### Artifact
+
 `tools/build-artifact.py` בונה גרסת עמוד יחיד (גוף בלבד, CSS מוטמע) לפרסום
 כ-Artifact, עם שאר הקבצים כקבצים נלווים. שימו לב: מדיניות ה-CSS של Artifacts
 חוסמת `fetch` לדומיינים חיצוניים, ולכן שם הטקסטים מגיעים מ-`data/texts.js`
 בלבד — אותו תוכן, בלי הרענון החי. לאירוח שבו גם המשיכה החיה מספריא עובדת,
-כל שרת סטטי מתאים (GitHub Pages, Netlify).
+ראו את גרסת ה-Pages שלמעלה.
 
 ---
 

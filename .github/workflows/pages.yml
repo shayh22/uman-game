@@ -1,0 +1,56 @@
+# פורס את המשחק ל-GitHub Pages.
+# האתר סטטי לגמרי — index.html בשורש, ושאר הקבצים יחסית אליו — ולכן
+# אין שלב בנייה: מעלים את הריפו כפי שהוא.
+#
+# בניגוד לגרסת ה-Artifact, כאן אין CSP שחוסם fetch לדומיינים חיצוניים,
+# ולכן המשיכה החיה מספריא עובדת.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# פריסה אחת בכל רגע; לא מבטלים פריסה שכבר רצה
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: בדיקת תחביר
+        run: |
+          node --check game.js
+          node --check sefaria.js
+          for f in data/*.js; do node --check "$f"; done
+
+      - name: ודא שכל התצלומים שבמניפסט קיימים
+        run: |
+          missing=0
+          for f in $(grep -o "file: '[^']*'" data/photos.js | cut -d"'" -f2); do
+            if [ ! -s "assets/photos/$f" ]; then echo "חסר: assets/photos/$f"; missing=1; fi
+          done
+          exit $missing
+
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
